@@ -1,0 +1,63 @@
+---
+import '../styles/global.css';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign in – DailyMove</title>
+  </head>
+  <body style="background-color: #0a0a0f; color: #f0f0f0; margin: 0; min-height: 100vh; display: flex; align-items: center; justify-content: center; font-family: system-ui, -apple-system, sans-serif;">
+    <div style="width: 100%; max-width: 360px; padding: 0 20px;">
+      <!-- Logo -->
+      <div style="text-align: center; margin-bottom: 40px;">
+        <span style="font-size: 1.75rem; font-weight: 700; letter-spacing: -0.02em;">
+          <span style="color: #f0f0f0;">daily</span><span style="color: #5DCAA5;">move</span>
+        </span>
+      </div>
+
+      <!-- Card -->
+      <div style="background-color: #151519; border-radius: 16px; padding: 28px;">
+        <h1 style="margin: 0 0 24px; font-size: 1.125rem; font-weight: 600; color: #f0f0f0;">Sign in</h1>
+
+        <form>
+          <div style="margin-bottom: 16px;">
+            <label style="display: block; font-size: 0.875rem; color: #888; margin-bottom: 8px;" for="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              name="email"
+              placeholder="you@example.com"
+              style="width: 100%; box-sizing: border-box; background-color: #0a0a0f; border: 1px solid #2a2a2f; border-radius: 8px; padding: 10px 14px; color: #f0f0f0; font-size: 1rem; outline: none;"
+            />
+          </div>
+
+          <div style="margin-bottom: 24px;">
+            <label style="display: block; font-size: 0.875rem; color: #888; margin-bottom: 8px;" for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              name="password"
+              placeholder="••••••••"
+              style="width: 100%; box-sizing: border-box; background-color: #0a0a0f; border: 1px solid #2a2a2f; border-radius: 8px; padding: 10px 14px; color: #f0f0f0; font-size: 1rem; outline: none;"
+            />
+          </div>
+
+          <button
+            type="submit"
+            style="width: 100%; background-color: #5DCAA5; color: #0a0a0f; border: none; border-radius: 8px; padding: 12px; font-size: 1rem; font-weight: 600; cursor: pointer;"
+          >
+            Sign in
+          </button>
+        </form>
+      </div>
+
+      <p style="text-align: center; margin-top: 20px; font-size: 0.875rem; color: #888;">
+        Don't have an account?
+        <a href="/register" style="color: #5DCAA5; text-decoration: none; font-weight: 500;">Create account</a>
+      </p>
+    </div>
+  </body>
+</html>
