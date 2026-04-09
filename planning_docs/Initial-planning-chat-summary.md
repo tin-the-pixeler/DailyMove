@@ -40,13 +40,20 @@ After receiving explanations, the student asked for **clearer label suggestions*
 
 This demonstrates attention to user-facing language and a preference for self-explanatory UI over jargon.
 
-### 4. Data Architecture & Persistence
+### 4. Data Architecture, Persistence & Exercise Assets
 
-**Student's key challenge**: When the initial plan used localStorage for streak storage, the student pushed back:
+**Student's key challenge on persistence**: When the initial plan used localStorage for streak storage, the student pushed back:
 
 > "No, I need this to actually work"
 
 This drove the architecture shift from a purely static site to one with a real backend. The student understood that localStorage is per-device and wouldn't provide a real user experience across devices. This led to adopting **Supabase** (Postgres + auth) as the backend, which significantly upgraded the project's technical depth.
+
+**Exercise data pivot**: The original plan was to source animated GIFs from ExerciseDB with a body-part rotation schedule (Mon=chest, Tue=back, etc.). After downloading 35 GIFs, 22 turned out to be mislabeled (the S3 bucket IDs didn't map reliably to exercise names). The student manually reviewed and renamed the correctly identified GIFs, then made the pragmatic decision to:
+
+- Drop the body-part rotation (not enough GIFs per category) in favour of random daily selection from the full pool
+- Keep the 35 usable GIFs as local assets rather than depending on external URLs
+
+This shows adaptability — adjusting the design to match available resources rather than blocking on a perfect data source.
 
 **Hosting decision**: The student agreed to **Netlify** for free hosting after evaluating the options (Netlify, Vercel, GitHub Pages), understanding that HTTPS is required for PWA service workers.
 
@@ -92,16 +99,26 @@ This led to a leaner, more efficient context file — showing the student unders
 
 ---
 
+### 9. Scope Management
+
+The student decided to drop Sprint 7 (embeddable widget) from the project scope:
+
+> The widget is too complex and out of scope for the assignment deadline.
+
+This demonstrates practical scope management — recognizing when a feature adds complexity without proportional value, and cutting it to deliver a polished core product on time. The remaining 6 sprints cover a complete, functional app (scaffold, data, auth, main page, history, PWA).
+
+---
+
 ## Student's Key Contributions Summary
 
 | Area | Contribution |
 |------|-------------|
-| Product vision | Conceived the app concept, chose Darebee-style format, specified PWA + widget |
-| Feature selection | Body-part rotation, offline-first, no GIF in widget |
+| Product vision | Conceived the app concept, chose Darebee-style format, specified PWA |
+| Feature selection | Random daily exercise, offline-first, practical scope cuts |
 | UX decisions | Challenged unclear labels, chose Streak/Workouts/Completion |
 | Architecture | Pushed for real persistence over localStorage, drove Supabase adoption |
 | Data strategy | Chose local GIF storage over runtime API dependency |
-| Project management | Reframed as sprints, requested acceptance criteria and user stories |
+| Project management | Reframed as sprints, requested acceptance criteria and user stories, cut Sprint 7 for scope |
 | Workflow | Set up git, branching strategy, deployed to Netlify independently |
 | Documentation | Enforced lean CLAUDE.md, DRY prompt design |
 
@@ -109,8 +126,8 @@ This led to a leaner, more efficient context file — showing the student unders
 
 ## Artefacts Produced
 - `CLAUDE.md` — project context file for Claude Code
-- `sprint-plan.md` — 7 sprints with user stories and acceptance criteria
-- `user-stories-by-feature.md` — 22 user stories grouped by feature area
+- `sprint-plan.md` — 6 sprints with user stories and acceptance criteria (Sprint 7 cut)
+- `user-stories-by-feature.md` — 21 user stories grouped by feature area
 - `commit-1-prompt.md` — Sprint 1 build prompt
 - UI mockups: Today page, History page, Widget (reviewed and approved by student)
 - Architecture diagram showing Astro + Supabase + Netlify stack
