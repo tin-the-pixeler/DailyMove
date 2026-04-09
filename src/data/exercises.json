@@ -1,0 +1,226 @@
+[
+  {
+    "id": "45-degree-side-bend",
+    "name": "45-Degree Side Bend",
+    "sets": 3,
+    "reps": "15",
+    "gifUrl": "/gifs/45-degree-side-bend.gif"
+  },
+  {
+    "id": "air-bike",
+    "name": "Air Bike",
+    "sets": 3,
+    "reps": "20",
+    "gifUrl": "/gifs/air-bike.gif"
+  },
+  {
+    "id": "arms-overhead-sit-up",
+    "name": "Arms Overhead Sit-Up",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/arms-overhead-sit-up.gif"
+  },
+  {
+    "id": "bear-crawl",
+    "name": "Bear Crawl",
+    "sets": 3,
+    "reps": "30 sec",
+    "gifUrl": "/gifs/bear-crawl.gif"
+  },
+  {
+    "id": "concentration-curl",
+    "name": "Concentration Curl",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/concentration-curl.gif"
+  },
+  {
+    "id": "decline-push-up",
+    "name": "Decline Push-Up",
+    "sets": 3,
+    "reps": "10",
+    "gifUrl": "/gifs/decline-push-up.gif"
+  },
+  {
+    "id": "hanging-leg-raise",
+    "name": "Hanging Leg Raise",
+    "sets": 3,
+    "reps": "10",
+    "gifUrl": "/gifs/hanging-leg-raise.gif"
+  },
+  {
+    "id": "incline-dumbbell-fly",
+    "name": "Incline Dumbbell Fly",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/incline-dumbbell-fly.gif"
+  },
+  {
+    "id": "incline-dumbbell-front-raise",
+    "name": "Incline Dumbbell Front Raise",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/incline-dumbbell-front-raise.gif"
+  },
+  {
+    "id": "incline-dumbbell-lateral-raise",
+    "name": "Incline Dumbbell Lateral Raise",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/incline-dumbbell-lateral-raise.gif"
+  },
+  {
+    "id": "incline-seated-dumbbell-curl",
+    "name": "Incline Seated Dumbbell Curl",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/incline-seated-dumbbell-curl.gif"
+  },
+  {
+    "id": "leg-press",
+    "name": "Leg Press",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/leg-press.gif"
+  },
+  {
+    "id": "lying-dumbbell-tricep-extension",
+    "name": "Lying Dumbbell Tricep Extension",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/lying-dumbbell-tricep-extension.gif"
+  },
+  {
+    "id": "marching-in-place",
+    "name": "Marching in Place",
+    "sets": 3,
+    "reps": "60 sec",
+    "gifUrl": "/gifs/marching-in-place.gif"
+  },
+  {
+    "id": "one-arm-overhead-tricep-extension",
+    "name": "One-Arm Overhead Tricep Extension",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/one-arm-overhead-tricep-extension.gif"
+  },
+  {
+    "id": "overhead-tricep-extension",
+    "name": "Overhead Tricep Extension",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/overhead-tricep-extension.gif"
+  },
+  {
+    "id": "plank-shoulder-tap",
+    "name": "Plank Shoulder Tap",
+    "sets": 3,
+    "reps": "30 sec",
+    "gifUrl": "/gifs/plank-shoulder-tap.gif"
+  },
+  {
+    "id": "seated-dumbbell-curl",
+    "name": "Seated Dumbbell Curl",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/seated-dumbbell-curl.gif"
+  },
+  {
+    "id": "seated-dumbbell-shoulder-press",
+    "name": "Seated Dumbbell Shoulder Press",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/seated-dumbbell-shoulder-press.gif"
+  },
+  {
+    "id": "seated-overhead-tricep-extension",
+    "name": "Seated Overhead Tricep Extension",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/seated-overhead-tricep-extension.gif"
+  },
+  {
+    "id": "side-lying-external-rotation",
+    "name": "Side-Lying External Rotation",
+    "sets": 3,
+    "reps": "15",
+    "gifUrl": "/gifs/side-lying-external-rotation.gif"
+  },
+  {
+    "id": "side-lying-oblique-crunch",
+    "name": "Side-Lying Oblique Crunch",
+    "sets": 3,
+    "reps": "15",
+    "gifUrl": "/gifs/side-lying-oblique-crunch.gif"
+  },
+  {
+    "id": "side-lying-wrist-rotation",
+    "name": "Side-Lying Wrist Rotation",
+    "sets": 3,
+    "reps": "15",
+    "gifUrl": "/gifs/side-lying-wrist-rotation.gif"
+  },
+  {
+    "id": "skater-step",
+    "name": "Skater Step",
+    "sets": 3,
+    "reps": "30 sec",
+    "gifUrl": "/gifs/skater-step.gif"
+  },
+  {
+    "id": "stability-ball-back-extension",
+    "name": "Stability Ball Back Extension",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/stability-ball-back-extension.gif"
+  },
+  {
+    "id": "stability-ball-back-stretch",
+    "name": "Stability Ball Back Stretch",
+    "sets": 3,
+    "reps": "30 sec",
+    "gifUrl": "/gifs/stability-ball-back-stretch.gif"
+  },
+  {
+    "id": "stability-ball-dumbbell-chest-press",
+    "name": "Stability Ball Dumbbell Chest Press",
+    "sets": 3,
+    "reps": "12",
+    "gifUrl": "/gifs/stability-ball-dumbbell-chest-press.gif"
+  },
+  {
+    "id": "stability-ball-lat-stretch",
+    "name": "Stability Ball Lat Stretch",
+    "sets": 3,
+    "reps": "30 sec",
+    "gifUrl": "/gifs/stability-ball-lat-stretch.gif"
+  },
+  {
+    "id": "star-jump",
+    "name": "Star Jump",
+    "sets": 3,
+    "reps": "20",
+    "gifUrl": "/gifs/star-jump.gif"
+  },
+  {
+    "id": "three-quarter-sit-up",
+    "name": "Three-Quarter Sit-Up",
+    "sets": 3,
+    "reps": "15",
+    "gifUrl": "/gifs/three-quarter-sit-up.gif"
+  },
+  {
+    "id": "wide-grip-decline-push-up",
+    "name": "Wide-Grip Decline Push-Up",
+    "sets": 3,
+    "reps": "10",
+    "gifUrl": "/gifs/wide-grip-decline-push-up.gif"
+  },
+  {
+    "id": "wide-grip-pull-up",
+    "name": "Wide-Grip Pull-Up",
+    "sets": 3,
+    "reps": "8",
+    "gifUrl": "/gifs/wide-grip-pull-up.gif"
+  }
+]
