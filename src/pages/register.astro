@@ -1,4 +1,10 @@
 ---
+import { getUser } from '../lib/supabase-server';
+
+const user = await getUser(Astro.cookies);
+if (user) return Astro.redirect('/');
+
+const error = Astro.url.searchParams.get('error');
 import '../styles/global.css';
 ---
 
@@ -22,7 +28,13 @@ import '../styles/global.css';
       <div style="background-color: #151519; border-radius: 16px; padding: 28px;">
         <h1 style="margin: 0 0 24px; font-size: 1.125rem; font-weight: 600; color: #f0f0f0;">Create account</h1>
 
-        <form>
+        {error && (
+          <div style="background-color: #2a1a1a; border: 1px solid #5a2a2a; border-radius: 8px; padding: 10px 14px; margin-bottom: 16px; font-size: 0.875rem; color: #ff6b6b;">
+            {error}
+          </div>
+        )}
+
+        <form method="POST" action="/api/register">
           <div style="margin-bottom: 16px;">
             <label style="display: block; font-size: 0.875rem; color: #888; margin-bottom: 8px;" for="email">Email</label>
             <input
@@ -30,6 +42,7 @@ import '../styles/global.css';
               type="email"
               name="email"
               placeholder="you@example.com"
+              required
               style="width: 100%; box-sizing: border-box; background-color: #0a0a0f; border: 1px solid #2a2a2f; border-radius: 8px; padding: 10px 14px; color: #f0f0f0; font-size: 1rem; outline: none;"
             />
           </div>
@@ -41,6 +54,7 @@ import '../styles/global.css';
               type="password"
               name="password"
               placeholder="••••••••"
+              required
               style="width: 100%; box-sizing: border-box; background-color: #0a0a0f; border: 1px solid #2a2a2f; border-radius: 8px; padding: 10px 14px; color: #f0f0f0; font-size: 1rem; outline: none;"
             />
           </div>
@@ -52,6 +66,7 @@ import '../styles/global.css';
               type="password"
               name="confirm"
               placeholder="••••••••"
+              required
               style="width: 100%; box-sizing: border-box; background-color: #0a0a0f; border: 1px solid #2a2a2f; border-radius: 8px; padding: 10px 14px; color: #f0f0f0; font-size: 1rem; outline: none;"
             />
           </div>

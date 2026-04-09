@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getUser } from '../lib/supabase-server';
 
-export const prerender = true;
+const user = await getUser(Astro.cookies);
+if (!user) return Astro.redirect('/login');
 ---
 
 <BaseLayout title="DailyMove – Today">
