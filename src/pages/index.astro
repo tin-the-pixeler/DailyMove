@@ -1,13 +1,118 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getUser } from '../lib/supabase-server';
+import { getUser, createServerClient } from '../lib/supabase-server';
+import { getDailyExercise } from '../lib/daily-exercise';
+import { calcStreak, getWeekDates } from '../lib/streak';
 
 const user = await getUser(Astro.cookies);
 if (!user) return Astro.redirect('/login');
+
+const supabase = createServerClient(Astro.cookies);
+const today = new Date().toISOString().slice(0, 10);
+const exercise = getDailyExercise();
+
+// Fetch all completions for streak + week dots
+const { data: completions } = await supabase
+  .from('completions')
+  .select('date')
+  .eq('user_id', user.id);
+
+const completedDates = completions?.map((c: { date: string }) => c.date) ?? [];
+const streak = calcStreak(completedDates);
+const weekDates = getWeekDates();
+const isCompleted = completedDates.includes(today);
+
+const dayLabels = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
 ---
 
-<BaseLayout title="DailyMove – Today">
-  <div style="display: flex; align-items: center; justify-content: center; height: 60vh; color: #555; font-size: 1rem;">
-    Today's exercise — coming soon
+<BaseLayout title="DailyMove – Today" streak={streak}>
+  <div style="max-width: 480px; margin: 0 auto; padding: 20px 16px;">
+
+    <!-- Week dots -->
+    <div style="display: flex; justify-content: space-between; margin-bottom: 24px;">
+      {weekDates.map((date, i) => {
+        const done = completedDates.includes(date);
+        const isToday = date === today;
+        const isPast = date < today;
+        let bg = '#1a1a1f';
+        if (done) bg = '#5DCAA5';
+        else if (isPast) bg = '#2a2a2f';
+        return (
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 6px;">
+            <div style={`width: 36px; height: 36px; border-radius: 50%; background-color: ${bg}; border: ${isToday ? '2px solid #5DCAA5' : '2px solid transparent'}; display: flex; align-items: center; justify-content: center;`}>
+              {done && (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#0a0a0f" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+              )}
+            </div>
+            <span style={`font-size: 0.7rem; font-weight: 500; color: ${isToday ? '#5DCAA5' : '#555'};`}>{dayLabels[i]}</span>
+          </div>
+        );
+      })}
+    </div>
+
+    <!-- Exercise card -->
+    <div style="background-color: #151519; border-radius: 20px; overflow: hidden; margin-bottom: 20px;">
+      <img
+        src={exercise.gifUrl}
+        alt={exercise.name}
+        style="width: 100%; aspect-ratio: 4/3; object-fit: cover; display: block;"
+      />
+      <div style="padding: 20px;">
+        <h1 style="margin: 0 0 8px; font-size: 1.375rem; font-weight: 700; color: #f0f0f0;">{exercise.name}</h1>
+        <p style="margin: 0 0 20px; font-size: 0.9rem; color: #888;">
+          {exercise.sets} sets &times; {exercise.reps} reps
+        </p>
+
+        <button
+          id="complete-btn"
+          data-date={today}
+          data-exercise-id={exercise.id}
+          data-completed={isCompleted ? 'true' : 'false'}
+          style={`width: 100%; border: none; border-radius: 12px; padding: 14px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: all 0.2s; background-color: ${isCompleted ? '#1a3a2e' : '#5DCAA5'}; color: ${isCompleted ? '#5DCAA5' : '#0a0a0f'};`}
+        >
+          {isCompleted ? '✓ Completed' : 'Mark complete'}
+        </button>
+      </div>
+    </div>
   </div>
 </BaseLayout>
+
+<script>
+  const btn = document.getElementById('complete-btn') as HTMLButtonElement;
+
+  btn.addEventListener('click', async () => {
+    const date = btn.dataset.date!;
+    const exerciseId = btn.dataset.exerciseId!;
+    const completed = btn.dataset.completed === 'true';
+
+    if (completed) {
+      const res = await fetch('/api/completions', {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date }),
+      });
+      if (res.ok) {
+        btn.dataset.completed = 'false';
+        btn.textContent = 'Mark complete';
+        btn.style.backgroundColor = '#5DCAA5';
+        btn.style.color = '#0a0a0f';
+        window.location.reload();
+      }
+    } else {
+      const res = await fetch('/api/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ date, exercise_id: exerciseId }),
+      });
+      if (res.ok) {
+        btn.dataset.completed = 'true';
+        btn.textContent = '✓ Completed';
+        btn.style.backgroundColor = '#1a3a2e';
+        btn.style.color = '#5DCAA5';
+        window.location.reload();
+      }
+    }
+  });
+</script>
