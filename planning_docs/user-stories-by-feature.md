@@ -39,8 +39,11 @@
 | U18 | As a user, the app works offline with cached exercises and GIFs | Sprint 6 |
 | U19 | As a user, the app syncs my completions when I come back online | Sprint 6 |
 
-## Widget
+## Widget ~~CANCELED~~
+
+> **Decision (2026-04-09):** These stories were canceled. A native desktop widget requires platform-specific development (Swift/Xcode or Electron/Tauri) which is out of scope for this PWA project.
+
 | ID | User Story | Sprint |
 |----|-----------|--------|
-| U20 | As a user, I can embed a compact widget showing my streak and today's exercise | Sprint 7 |
-| U21 | As a user, I can mark complete from within the widget | Sprint 7 |
+| ~~U20~~ | ~~As a user, I can embed a compact widget showing my streak and today's exercise~~ | ~~Sprint 7~~ |
+| ~~U21~~ | ~~As a user, I can mark complete from within the widget~~ | ~~Sprint 7~~ |
