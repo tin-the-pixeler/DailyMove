@@ -19,22 +19,20 @@ No user stories — this is infrastructure. Login/register pages are created as 
 ---
 
 ## Sprint 2: Exercise Data Layer & Daily Selection
-Build the exercise dataset and the algorithm that picks one exercise per day.
+Build the exercise dataset from 35 downloaded GIFs and the algorithm that picks one random exercise per day.
 
 | ID | User Story |
 |----|-----------|
-| U06 | As a user, the exercise rotates by body part each day of the week |
-| U07 | As a user, the specific exercise within a body part changes each week |
-| U08 | As a user, I see the same exercise as everyone else on the same day |
+| U01 | As a user, I get a different exercise each day |
+| U02 | As a user, I see the same exercise as everyone else on the same day |
 
 ### Acceptance Criteria
-- [ ] `exercises.json` contains ~40 bodyweight exercises with id, name, bodyPart, target, sets, reps, gifUrl
-- [ ] Each of the 7 body parts (chest, back, legs, shoulders, arms, core, cardio) has at least 5 exercises
-- [ ] GIF files are downloaded and present in `public/gifs/`
-- [ ] `getDailyExercise(date)` returns the correct body part for each day of the week
+- [ ] 35 exercise GIF files are present in `public/gifs/`
+- [ ] `exercises.json` contains an entry for each GIF with id, name, sets, reps, gifUrl
+- [ ] `getDailyExercise(date)` returns one exercise from the full pool using a date-seeded random
 - [ ] Calling `getDailyExercise()` with the same date always returns the same exercise
-- [ ] The exercise changes when the week changes (different seed per ISO week)
-- [ ] TypeScript types are defined for the Exercise interface
+- [ ] Different dates return different exercises
+- [ ] TypeScript Exercise interface is defined
 
 ---
 
@@ -43,10 +41,10 @@ Wire up authentication and create the completions table.
 
 | ID | User Story |
 |----|-----------|
-| U01 | As a new user, I can create an account with email and password so my data is saved |
-| U02 | As a returning user, I can log in with my email and password |
-| U03 | As a logged-in user, I can log out |
-| U04 | As a visitor, I am redirected to login when accessing protected pages |
+| U03 | As a new user, I can create an account with email and password so my data is saved |
+| U04 | As a returning user, I can log in with my email and password |
+| U05 | As a logged-in user, I can log out |
+| U06 | As a visitor, I am redirected to login when accessing protected pages |
 
 ### Acceptance Criteria
 - [ ] Supabase client initializes with env vars from `.env`
@@ -67,15 +65,15 @@ Build the main screen with exercise card, completions API, and streak logic.
 
 | ID | User Story |
 |----|-----------|
-| U05 | As a user, I see today's exercise with a GIF, name, body part, and reps/sets |
-| U09 | As a user, I can mark today's exercise as complete |
-| U10 | As a user, I can unmark today's exercise if I made a mistake |
-| U11 | As a user, I see my current streak count in the header |
-| U12 | As a user, I see this week's progress as dots (Mon–Sun) on the Today page |
-| U13 | As a user, my completions persist across devices and browsers |
+| U07 | As a user, I see today's exercise with a GIF, name, and reps/sets |
+| U08 | As a user, I can mark today's exercise as complete |
+| U09 | As a user, I can unmark today's exercise if I made a mistake |
+| U10 | As a user, I see my current streak count in the header |
+| U11 | As a user, I see this week's progress as dots (Mon–Sun) on the Today page |
+| U12 | As a user, my completions persist across devices and browsers |
 
 ### Acceptance Criteria
-- [ ] Today page shows the exercise GIF, name, body part label, and sets/reps
+- [ ] Today page shows the exercise GIF, name, and sets/reps
 - [ ] "Mark complete" button saves a completion to Supabase via POST /api/completions
 - [ ] After completing, button changes to "Completed" with visual feedback
 - [ ] Clicking "Completed" unmarks via DELETE /api/completions and reverts the button
@@ -92,10 +90,10 @@ Build the history view with stats, calendar heatmap, and recent activity.
 
 | ID | User Story |
 |----|-----------|
-| U14 | As a user, I see my current streak, total workouts, and completion rate as stats |
-| U15 | As a user, I see a monthly calendar heatmap showing completed and missed days |
-| U16 | As a user, I can navigate between months in the calendar |
-| U17 | As a user, I see a recent activity list with exercise names and completion status |
+| U13 | As a user, I see my current streak, total workouts, and completion rate as stats |
+| U14 | As a user, I see a monthly calendar heatmap showing completed and missed days |
+| U15 | As a user, I can navigate between months in the calendar |
+| U16 | As a user, I see a recent activity list with exercise names and completion status |
 
 ### Acceptance Criteria
 - [ ] Three stat cards display: current streak, total workouts, completion percentage
@@ -105,7 +103,7 @@ Build the history view with stats, calendar heatmap, and recent activity.
 - [ ] Today is visually distinct (teal border)
 - [ ] Arrow buttons navigate to previous/next months
 - [ ] Calendar does not allow navigating to future months beyond current
-- [ ] Recent activity list shows last 7 days with exercise name, body part, and status
+- [ ] Recent activity list shows last 7 days with exercise name and status
 - [ ] Legend explains the color coding (completed, missed, upcoming)
 
 ---
@@ -115,9 +113,9 @@ Make the app installable and offline-capable.
 
 | ID | User Story |
 |----|-----------|
-| U18 | As a user, I can install the app on my phone's home screen |
-| U19 | As a user, the app works offline with cached exercises and GIFs |
-| U20 | As a user, the app syncs my completions when I come back online |
+| U17 | As a user, I can install the app on my phone's home screen |
+| U18 | As a user, the app works offline with cached exercises and GIFs |
+| U19 | As a user, the app syncs my completions when I come back online |
 
 ### Acceptance Criteria
 - [ ] Web manifest is present with app name, icons (192px, 512px), theme color, display: standalone
@@ -137,8 +135,8 @@ Build the compact widget route for iframe embedding.
 
 | ID | User Story |
 |----|-----------|
-| U21 | As a user, I can embed a compact widget showing my streak and today's exercise |
-| U22 | As a user, I can mark complete from within the widget |
+| U20 | As a user, I can embed a compact widget showing my streak and today's exercise |
+| U21 | As a user, I can mark complete from within the widget |
 
 ### Acceptance Criteria
 - [ ] `/widget` renders a compact card with logo, streak, exercise name, reps, and complete button

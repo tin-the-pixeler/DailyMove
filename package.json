@@ -17,6 +17,9 @@
     "astro": "^6.1.5",
     "tailwindcss": "^4.2.2"
   },
+  "overrides": {
+    "vite": "^7"
+  },
   "optionalDependencies": {
     "@rollup/rollup-darwin-x64": "^4.60.1"
   }
