@@ -1,13 +1,206 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import { getUser } from '../lib/supabase-server';
+import { getUser, createServerClient } from '../lib/supabase-server';
+import { getDailyExercise } from '../lib/daily-exercise';
+import { calcStreak } from '../lib/streak';
 
 const user = await getUser(Astro.cookies);
 if (!user) return Astro.redirect('/login');
+
+const supabase = createServerClient(Astro.cookies);
+const today = new Date().toISOString().slice(0, 10);
+
+// Fetch all completions with exercise_id
+const { data: completions } = await supabase
+  .from('completions')
+  .select('date, exercise_id')
+  .eq('user_id', user.id)
+  .order('date', { ascending: false });
+
+const allCompletions = completions ?? [];
+const completedDates = allCompletions.map((c: { date: string }) => c.date);
+const streak = calcStreak(completedDates);
+
+// Stats
+const totalWorkouts = completedDates.length;
+const accountCreated = new Date(user.created_at ?? today);
+const daysSinceJoined = Math.max(
+  1,
+  Math.floor((new Date(today).getTime() - accountCreated.getTime()) / 86400000) + 1
+);
+const completionRate = Math.round((totalWorkouts / daysSinceJoined) * 100);
+
+// Calendar — default to current month, client-side navigation handles month changes
+const now = new Date();
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth(); // 0-indexed
+
+// Recent activity — last 7 days
+const recentDays = Array.from({ length: 7 }, (_, i) => {
+  const d = new Date(today);
+  d.setDate(d.getDate() - i);
+  return d.toISOString().slice(0, 10);
+});
+
+const recentActivity = recentDays
+  .map(date => {
+    const completion = allCompletions.find((c: { date: string; exercise_id: string }) => c.date === date);
+    const ex = getDailyExercise(new Date(date + 'T12:00:00'));
+    const exerciseName = ex.name;
+    const isPast = date < today;
+    return { date, completed: !!completion, exerciseName, isPast };
+  })
+  .filter(({ date, completed }) => date === today || completed);
 ---
 
-<BaseLayout title="DailyMove – History">
-  <div style="display: flex; align-items: center; justify-content: center; height: 60vh; color: #555; font-size: 1rem;">
-    Exercise history — coming soon
+<BaseLayout title="DailyMove – History" streak={streak}>
+  <div style="max-width: 480px; margin: 0 auto; padding: 20px 16px;">
+
+    <!-- Stat cards -->
+    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 24px;">
+      <div style="background-color: #151519; border-radius: 14px; padding: 14px 10px; text-align: center;">
+        <div style="font-size: 1.5rem; font-weight: 700; color: #5DCAA5;">{streak}</div>
+        <div style="font-size: 0.7rem; color: #888; margin-top: 4px;">day streak</div>
+      </div>
+      <div style="background-color: #151519; border-radius: 14px; padding: 14px 10px; text-align: center;">
+        <div style="font-size: 1.5rem; font-weight: 700; color: #5DCAA5;">{totalWorkouts}</div>
+        <div style="font-size: 0.7rem; color: #888; margin-top: 4px;">total workouts</div>
+      </div>
+      <div style="background-color: #151519; border-radius: 14px; padding: 14px 10px; text-align: center;">
+        <div style="font-size: 1.5rem; font-weight: 700; color: #5DCAA5;">{completionRate}%</div>
+        <div style="font-size: 0.7rem; color: #888; margin-top: 4px;">completion</div>
+      </div>
+    </div>
+
+    <!-- Calendar -->
+    <div style="background-color: #151519; border-radius: 20px; padding: 20px; margin-bottom: 24px;">
+      <!-- Month nav -->
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+        <button id="prev-month" style="background: none; border: none; color: #888; cursor: pointer; padding: 4px 8px; font-size: 1.25rem;">‹</button>
+        <span id="month-label" style="font-size: 0.95rem; font-weight: 600; color: #f0f0f0;"></span>
+        <button id="next-month" style="background: none; border: none; color: #888; cursor: pointer; padding: 4px 8px; font-size: 1.25rem;">›</button>
+      </div>
+
+      <!-- Day headers -->
+      <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 8px;">
+        {['M','T','W','T','F','S','S'].map(d => (
+          <div style="text-align: center; font-size: 0.7rem; color: #555; font-weight: 500;">{d}</div>
+        ))}
+      </div>
+
+      <!-- Calendar grid (rendered by JS) -->
+      <div id="calendar-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px;"></div>
+
+      <!-- Legend -->
+      <div style="display: flex; gap: 16px; margin-top: 16px; justify-content: center;">
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background-color: #5DCAA5;"></div>
+          <span style="font-size: 0.7rem; color: #888;">completed</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background-color: #3a1a1a;"></div>
+          <span style="font-size: 0.7rem; color: #888;">missed</span>
+        </div>
+        <div style="display: flex; align-items: center; gap: 5px;">
+          <div style="width: 10px; height: 10px; border-radius: 50%; background-color: #1a1a1f;"></div>
+          <span style="font-size: 0.7rem; color: #888;">upcoming</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent activity -->
+    <div style="background-color: #151519; border-radius: 20px; padding: 20px;">
+      <h2 style="margin: 0 0 16px; font-size: 0.95rem; font-weight: 600; color: #f0f0f0;">Recent Activity</h2>
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        {recentActivity.map(({ date, completed, exerciseName, isPast }) => {
+          const d = new Date(date + 'T12:00:00');
+          const label = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+          return (
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div>
+                <div style={`font-size: 0.875rem; color: ${isPast && !completed ? '#555' : '#f0f0f0'};`}>{exerciseName}</div>
+                <div style="font-size: 0.75rem; color: #555; margin-top: 2px;">{label}</div>
+              </div>
+              <div style={`width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; background-color: ${completed ? '#1a3a2e' : (isPast ? '#3a1a1a' : '#1a1a1f')};`}>
+                {completed
+                  ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#5DCAA5" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                  : isPast
+                    ? <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                    : <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#555" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                }
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   </div>
 </BaseLayout>
+
+<script define:vars={{ completedDates, today, currentYear, currentMonth }} is:inline>
+  const grid = document.getElementById('calendar-grid');
+  const label = document.getElementById('month-label');
+  const prevBtn = document.getElementById('prev-month');
+  const nextBtn = document.getElementById('next-month');
+
+  const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const completedSet = new Set(completedDates);
+
+  let year = currentYear;
+  let month = currentMonth;
+
+  function render() {
+    label.textContent = `${MONTHS[month]} ${year}`;
+
+    // Disable next if already at current month
+    const isCurrentMonth = year === currentYear && month === currentMonth;
+    nextBtn.style.color = isCurrentMonth ? '#2a2a2f' : '#888';
+    nextBtn.disabled = isCurrentMonth;
+
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+    // Mon=0 offset
+    const startOffset = (firstDay.getDay() + 6) % 7;
+    const totalDays = lastDay.getDate();
+
+    grid.innerHTML = '';
+
+    // Empty cells before first day
+    for (let i = 0; i < startOffset; i++) {
+      grid.innerHTML += `<div></div>`;
+    }
+
+    for (let day = 1; day <= totalDays; day++) {
+      const mm = String(month + 1).padStart(2, '0');
+      const dd = String(day).padStart(2, '0');
+      const dateStr = `${year}-${mm}-${dd}`;
+      const isToday = dateStr === today;
+      const isPast = dateStr < today;
+      const done = completedSet.has(dateStr);
+
+      let bg = '#1a1a1f';
+      if (done) bg = '#5DCAA5';
+      else if (isPast) bg = '#3a1a1a';
+
+      const border = isToday ? '2px solid #5DCAA5' : '2px solid transparent';
+      const color = done ? '#0a0a0f' : '#888';
+
+      grid.innerHTML += `<div style="aspect-ratio:1;border-radius:6px;background-color:${bg};border:${border};display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:500;color:${color};">${day}</div>`;
+    }
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if (month === 0) { month = 11; year--; }
+    else month--;
+    render();
+  });
+
+  nextBtn.addEventListener('click', () => {
+    if (year === currentYear && month === currentMonth) return;
+    if (month === 11) { month = 0; year++; }
+    else month++;
+    render();
+  });
+
+  render();
+</script>

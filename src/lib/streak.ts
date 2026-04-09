@@ -3,28 +3,32 @@
  * A streak counts backwards from today. If today is not completed, we still
  * count if yesterday was completed (streak still alive until end of today).
  */
+function toLocalDateStr(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}
+
 export function calcStreak(completedDates: string[]): number {
   if (completedDates.length === 0) return 0;
 
   const dateSet = new Set(completedDates);
-  const today = new Date();
   let streak = 0;
 
-  // Start from today, walk backwards
-  const cursor = new Date(today);
+  const cursor = new Date();
   cursor.setHours(0, 0, 0, 0);
 
   while (true) {
-    const dateStr = cursor.toISOString().slice(0, 10);
+    const dateStr = toLocalDateStr(cursor);
     if (dateSet.has(dateStr)) {
       streak++;
       cursor.setDate(cursor.getDate() - 1);
     } else {
-      // If today isn't completed yet, check yesterday before breaking
+      // If today isn't completed yet, still count if yesterday was
       if (streak === 0) {
         cursor.setDate(cursor.getDate() - 1);
-        const yesterday = cursor.toISOString().slice(0, 10);
-        if (dateSet.has(yesterday)) {
+        if (dateSet.has(toLocalDateStr(cursor))) {
           streak++;
           cursor.setDate(cursor.getDate() - 1);
           continue;
@@ -50,6 +54,6 @@ export function getWeekDates(date: Date = new Date()): string[] {
   return Array.from({ length: 7 }, (_, i) => {
     const dd = new Date(monday);
     dd.setDate(monday.getDate() + i);
-    return dd.toISOString().slice(0, 10);
+    return toLocalDateStr(dd);
   });
 }
