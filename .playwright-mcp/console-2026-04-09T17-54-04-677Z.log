@@ -1,0 +1,8 @@
+[     362ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ chrome-error://chromewebdata/:0
+[    3409ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ chrome-error://chromewebdata/:0
+[    6758ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ chrome-error://chromewebdata/:0
+[   15567ms] [ERROR] Access to fetch at 'https://dailymove.netlify.app/' from origin 'null' has been blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present on the requested resource. @ chrome-error://chromewebdata/:0
+[   15568ms] [ERROR] Failed to load resource: net::ERR_FAILED @ https://dailymove.netlify.app/:0
+[   27843ms] [ERROR] Failed to load resource: the server responded with a status of 500 () @ chrome-error://chromewebdata/:0
+[   38266ms] [ERROR] Unsafe attempt to load URL https://dailymove.netlify.app/ from frame with URL chrome-error://chromewebdata/. Domains, protocols and ports must match.
+ @ chrome-error://chromewebdata/:0
