@@ -130,7 +130,10 @@ Make the app installable and offline-capable.
 
 ---
 
-## Sprint 7: Embeddable Widget
+## Sprint 7: Embeddable Widget ~~CANCELED~~
+
+> **Decision (2026-04-09):** Sprint 7 was canceled after investigation revealed that a truly embeddable widget running outside the browser (e.g. as a native macOS/desktop widget) requires native platform development (Swift/Xcode or Electron/Tauri) which is out of scope for this project. The iframe-based web widget approach was implemented and then reverted as it does not meet the original intent of the feature. The `/widget` route remains as a placeholder shell from Sprint 1.
+
 Build the compact widget route for iframe embedding.
 
 | ID | User Story |
