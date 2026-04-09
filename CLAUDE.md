@@ -1,6 +1,6 @@
 # DailyMove
 
-Daily exercise habit tracker PWA. Assigns one bodyweight exercise per day based on a rotating body-part schedule (Mon=chest, Tue=back, Wed=legs, Thu=shoulders, Fri=arms, Sat=core, Sun=cardio). Users mark complete to build streaks.
+Daily exercise habit tracker PWA. Assigns one random exercise per day from a fixed pool of 32 exercises, seeded by date so all users get the same exercise on the same day. Users mark complete to build streaks.
 
 ## Stack
 Astro 5 (hybrid, TypeScript strict) + Tailwind v4 + Supabase (auth + Postgres) + Netlify adapter
@@ -8,7 +8,7 @@ Astro 5 (hybrid, TypeScript strict) + Tailwind v4 + Supabase (auth + Postgres) +
 ## Architecture
 - Static pages (index, history, widget) + SSR for auth/API endpoints
 - Exercise data: static JSON + local GIFs in `public/gifs/` (from ExerciseDB)
-- Daily selection: day-of-week → body part, then date-seeded random within that pool
+- Daily selection: date string (YYYY-MM-DD) hashed to index into full exercise pool — same date = same exercise for all users
 - Persistence: Supabase `completions` table (user_id, date, exercise_id) with RLS
 - Widget: `/widget` route, minimal layout, iframe-embeddable, no exercise image
 
